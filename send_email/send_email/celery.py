@@ -13,3 +13,14 @@ app = Celery('send_email')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 # Автоматически подцепляем наши таски из файла tasks.py
 app.autodiscover_tasks()
+
+
+
+# 2. Шедулер Celery - настройки интервалов
+# https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html
+app.conf.beat_schedule = {
+    'send-spam-every-1-minutes': {
+        'task': 'main.tasks.send_beat_email',
+        'schedule': crontab(minute='*/1'),
+    },
+}
