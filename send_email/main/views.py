@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from .models import Contact
 from .forms import ContactForm
@@ -23,3 +23,12 @@ class ContactView(CreateView):
         # Следующая строка запускает задачу в Celery (delay - отложить задачу и не ждать)
         send_spam_email.delay(form.instance.email)
         return super().form_valid(form)
+
+
+# Create your views here.
+class ContactListView(ListView):
+    """
+    Отображение пользователей
+    """
+    model = Contact
+    template_name = 'main/list.html'
